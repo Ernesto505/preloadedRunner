@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Coin : MonoBehaviour {
 
-    public delegate void CoinHitHandler();
+    public delegate void CoinHitHandler(bool badCoin);
 
     public CoinHitHandler Coinhit;
+
+    public bool IsBadCoin = false;
 
     // Use this for initialization
     void Start ()
@@ -22,6 +24,12 @@ public class Coin : MonoBehaviour {
         }
 	}
 
+    public void setCoinAsBad()
+    {
+        IsBadCoin = true;
+        this.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+    }
+
     void OnTriggerEnter()
     {
 
@@ -29,7 +37,7 @@ public class Coin : MonoBehaviour {
 
         if(Coinhit != null)
         {
-            Coinhit();
+            Coinhit(IsBadCoin);
         }
     }
     

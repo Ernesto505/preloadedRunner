@@ -25,20 +25,8 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        if(UsePhysicsMovement)
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                rb.AddForce(-transform.right * Thrust);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                rb.AddForce(transform.right * Thrust);
-            }
-        }
-
         if (!UsePhysicsMovement)
         {
             if (Input.GetKey(KeyCode.A))
@@ -56,6 +44,21 @@ public class CharacterController : MonoBehaviour {
                 float x = 4.0f * Mathf.Cos(zAngle);
                 float y = 4.0f * Mathf.Sin(zAngle);
                 this.transform.position = new Vector3(x, y, 0.0f);
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if(UsePhysicsMovement)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                rb.AddForce(-transform.right * Thrust);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                rb.AddForce(transform.right * Thrust);
             }
         }
     }

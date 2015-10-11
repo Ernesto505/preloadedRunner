@@ -4,11 +4,13 @@ using System.Collections;
 
 public class CoinManager : MonoBehaviour {
 
-    public Rigidbody Coins;
+    public GameObject Coins;
     int m_coinsHit = 0;
     int m_updateCounter = 0;
+    int m_numberOfCoins = 0;
     float m_initialAngle = 0.0f;
     float m_randomDistance = 0.0f;
+    
 
     public Text CoinsCounterText;
 
@@ -24,12 +26,13 @@ public class CoinManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update ()
+    void FixedUpdate ()
     {
         m_updateCounter++;
 
-        if (m_updateCounter % 20==0)
+        if (m_updateCounter % 10==0)
         {
+            m_numberOfCoins++;
             m_initialAngle += m_randomDistance;
 
             if (m_initialAngle < 180.0f || m_initialAngle>360.0f) 
@@ -41,16 +44,26 @@ public class CoinManager : MonoBehaviour {
             float x = 4.0f * Mathf.Cos(zAngle);
             float y = 4.0f * Mathf.Sin(zAngle);
             Vector3 coinPosition = new Vector3(x, y, 20.0f);
-            Rigidbody newCoin = (Rigidbody) Instantiate(Coins, coinPosition, Quaternion.identity);
+            GameObject newCoin = (GameObject) Instantiate(Coins, coinPosition, Quaternion.identity);
+
+            createBadCoins(newCoin);
+
             Subscribe(newCoin.gameObject.GetComponent<Coin>());
             m_updateCounter = 0;
         }
     }
 
-    void CoinHasBeenHit()
+    void CoinHasBeenHit(bool isBadCoin)
     {
-        m_coinsHit++;
-
+        if(!isBadCoin)
+        {
+            m_coinsHit++;
+        }
+        else
+        {
+            m_coinsHit = 0;
+        }
+        
         CoinsCounterText.text = m_coinsHit.ToString();
     }
 
@@ -61,6 +74,15 @@ public class CoinManager : MonoBehaviour {
         if (m_randomDistance > -2.0 && m_randomDistance < 2.0f)
         {
             m_randomDistance = 2.0f;
+        }
+    }
+
+    void createBadCoins(GameObject coin)
+    {
+        int coinsRatio = m_coinsHit / 20;
+        if (coinsRatio > 0 && m_numberOfCoins%(20/coinsRatio)==0)
+        {
+            coin.GetComponent<Coin>().setCoinAsBad();
         }
     }
 
