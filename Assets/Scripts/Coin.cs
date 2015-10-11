@@ -8,12 +8,14 @@ public class Coin : MonoBehaviour {
     public CoinHitHandler Coinhit;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
 	    this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -10.0f);
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (transform.position.z < -15.0f)
         {
             Destroy(gameObject);
