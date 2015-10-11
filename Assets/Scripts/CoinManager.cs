@@ -5,6 +5,11 @@ using System.Collections;
 public class CoinManager : MonoBehaviour {
 
     public GameObject Coins;
+
+    public AudioSource Speaker;
+    public AudioClip GoodCollect;
+    public AudioClip BadCollect;
+
     int m_coinsHit = 0;
     int m_updateCounter = 0;
     int m_numberOfCoins = 0;
@@ -30,7 +35,7 @@ public class CoinManager : MonoBehaviour {
     {
         m_updateCounter++;
 
-        if (m_updateCounter % 10==0)
+        if (m_updateCounter % 4==0)
         {
             m_numberOfCoins++;
             m_initialAngle += m_randomDistance;
@@ -44,7 +49,7 @@ public class CoinManager : MonoBehaviour {
             float x = 4.0f * Mathf.Cos(zAngle);
             float y = 4.0f * Mathf.Sin(zAngle);
             Vector3 coinPosition = new Vector3(x, y, 20.0f);
-            GameObject newCoin = (GameObject) Instantiate(Coins, coinPosition, Quaternion.identity);
+            GameObject newCoin = (GameObject) Instantiate(Coins, coinPosition, Quaternion.Euler(-45,-45,-45));
 
             createBadCoins(newCoin);
 
@@ -58,13 +63,15 @@ public class CoinManager : MonoBehaviour {
         if(!isBadCoin)
         {
             m_coinsHit++;
+            Speaker.PlayOneShot(GoodCollect,0.1f+((float)m_coinsHit/400.0f));
         }
         else
         {
+            Speaker.PlayOneShot(BadCollect, 0.1f + ((float)m_coinsHit / 400.0f));
             m_coinsHit = 0;
         }
         
-        CoinsCounterText.text = m_coinsHit.ToString();
+        CoinsCounterText.text = "Diamonds: " + m_coinsHit.ToString();
     }
 
     void getRandomNumbers()

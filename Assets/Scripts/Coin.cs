@@ -12,7 +12,7 @@ public class Coin : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-	    this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -10.0f);
+	    this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -5.0f);
     }
 	
 	// Update is called once per frame
@@ -22,6 +22,8 @@ public class Coin : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
+        transform.Rotate(1,0 , 0);
 	}
 
     public void setCoinAsBad()
@@ -30,15 +32,19 @@ public class Coin : MonoBehaviour {
         this.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
     }
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider other)
     {
 
-        Destroy(gameObject);
-
-        if(Coinhit != null)
+        if(other.gameObject.tag=="Player")
         {
-            Coinhit(IsBadCoin);
+            Destroy(gameObject);
+
+            if (Coinhit != null)
+            {
+                Coinhit(IsBadCoin);
+            }
         }
+
     }
     
 }
