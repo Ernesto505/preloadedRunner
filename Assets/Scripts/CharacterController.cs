@@ -3,17 +3,24 @@ using System.Collections;
 
 public class CharacterController : MonoBehaviour {
 
-    // Use this for initialization
+    
     public float Thrust;
-    public bool UsePhysicsMovement;
+
+    //this defines if the player will move using physics or not 
+    public bool UsePhysicsMovement = false;
 
     Rigidbody rb;
+
+    //the starting angle of the player in the circle that defines the moving path 
     float m_myAngle = 270.0f;
     
     void Start()
     {
+
         rb = this.gameObject.GetComponent<Rigidbody>();
-        if(UsePhysicsMovement)
+        
+        //here is checked if the player will move using physics or not
+        if (UsePhysicsMovement)
         {
             rb.isKinematic = false;
             transform.parent.GetComponent<Rigidbody>().isKinematic = false;
@@ -29,6 +36,8 @@ public class CharacterController : MonoBehaviour {
     {
         if (!UsePhysicsMovement)
         {
+            //if the player is not moving using physics the position is calculated 
+            //in a circle that has center (0,0) and radius 4
             if (Input.GetKey(KeyCode.A))
             {
                 m_myAngle -= Thrust;
@@ -47,6 +56,7 @@ public class CharacterController : MonoBehaviour {
             }
         }
 
+        //this is for aesthetic reasons
         transform.Rotate(0, 1, 0);
     }
 
